@@ -9,14 +9,18 @@ document.addEventListener("DOMContentLoaded", function () {
   // The back of the card
   const blankImage = "https://via.placeholder.com/120/ffd166/000000?text=🐾";
   
-  // images from Unsplash (cropped to 150x150 squares)
+// --- Game Images (Local Files) ---
   const animalPool = [
-    "https://images.unsplash.com/photo-1517849845537-4d257902454a?w=150&h=150&fit=crop", // Dog
-    "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=150&h=150&fit=crop", // Cat
-    "https://images.unsplash.com/photo-1552728089-57105a8e76ce?w=150&h=150&fit=crop", // Bird
-    "https://images.unsplash.com/photo-1585110396000-c9fd7e48afa1?w=150&h=150&fit=crop", // Rabbit
-    "https://images.unsplash.com/photo-1497935586351-b67a49e012bf?w=150&h=150&fit=crop", // Raccoon
-    "https://images.unsplash.com/photo-1516934024742-b461fba47600?w=150&h=150&fit=crop"  // Fox
+    "images/dog.jpg",
+    "images/cat.jpg",
+    "images/crow.jpg",
+    "images/rabbit.jpg",
+    "images/raccoon.jpg",
+    "images/duck.jpg",
+    "images/goat.jpg",
+    "images/deer.jpg",
+    "images/mouse.jpg",
+    "images/fox.jpg"
   ];
 
   // --- Game State Variables ---
