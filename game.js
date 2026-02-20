@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // The back of the card
   const blankImage = "https://via.placeholder.com/120/ffd166/000000?text=🐾";
   
-  // Guaranteed working images from Unsplash (cropped to 150x150 squares)
+  // images from Unsplash (cropped to 150x150 squares)
   const animalPool = [
     "https://images.unsplash.com/photo-1517849845537-4d257902454a?w=150&h=150&fit=crop", // Dog
     "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=150&h=150&fit=crop", // Cat
@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", function () {
   let matchesFound = 0;
   let moves = 0;
 
-  // --- The Shuffle Function (Fisher-Yates) ---
+  // --- The Shuffle Function ---
   function shuffle(array) {
     for (let i = array.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
