@@ -6,24 +6,18 @@ document.addEventListener("DOMContentLoaded", function () {
   const moveDisplay = document.getElementById("moveCount");
 
   // --- Game Images ---
-  // The back of the card
   const blankImage = "https://via.placeholder.com/120/ffd166/000000?text=🐾";
-  
-// --- Game Images (Local Files) ---
+
+  // 1. Define the base pool
   const animalPool = [
-    "images/dog.jpg",
-    "images/cat.jpg",
-    "images/crow.jpg",
-    "images/rabbit.jpg",
-    "images/raccoon.jpg",
-    "images/duck.jpg",
-    "images/goat.jpg",
-    "images/deer.jpg",
-    "images/mouse.jpg",
-    "images/fox.jpg"
+    "images/dog.jpg", "images/cat.jpg", "images/crow.jpg",
+    "images/rabbit.jpg", "images/raccoon.jpg", "images/duck.jpg",
+    "images/goat.jpg", "images/deer.jpg", "images/mouse.jpg", "images/fox.jpg"
   ];
 
-  // --- Game State Variables ---
+  // 2. Duplicate the pool so every animal has a pair (Total 20 cards)
+  let gameGrid = [...animalPool, ...animalPool];
+
   let firstTile = null;
   let secondTile = null;
   let lockBoard = false;
@@ -36,89 +30,77 @@ document.addEventListener("DOMContentLoaded", function () {
       const j = Math.floor(Math.random() * (i + 1));
       [array[i], array[j]] = [array[j], array[i]];
     }
-    return array;
   }
 
-  // --- Start / Reset Game ---
-  function startGame() {
-    // 1. Reset Board and Stats
-    board.innerHTML = ""; 
-    winMessage.style.display = "none";
+  // --- Initialize Game ---
+  function initGame() {
+    board.innerHTML = ""; // Clear existing board
+    shuffle(gameGrid);
     matchesFound = 0;
     moves = 0;
-    if (moveDisplay) moveDisplay.textContent = moves; 
-    [firstTile, secondTile] = [null, null];
-    lockBoard = false;
+    moveDisplay.innerText = moves;
+    winMessage.style.display = "none";
 
-    // 2. Prepare and Shuffle Images (Duplicate the 6 animals to make 12 cards)
-    let gameImages = shuffle([...animalPool, ...animalPool]);
+    gameGrid.forEach((imagePath) => {
+      const card = document.createElement("div");
+      card.classList.add("card");
+      // Store the actual animal image in a data attribute
+      card.dataset.icon = imagePath; 
+      
+      const img = document.createElement("img");
+      img.src = blankImage; // Show the back of the card initially
+      card.appendChild(img);
 
-    // 3. Create Tiles
-    gameImages.forEach((imgSrc) => {
-      let tile = document.createElement("img");
-      tile.src = blankImage;
-      tile.dataset.imageSrc = imgSrc; // Store the real image URL here secretly
-      tile.classList.add("tile");
-      tile.addEventListener("click", handleFlip);
-      board.appendChild(tile);
+      card.addEventListener("click", flipCard);
+      board.appendChild(card);
     });
   }
 
-  // --- Handle Card Clicks ---
-  function handleFlip() {
-    // Prevent clicking if the board is locked, if we clicked the same card twice, or if it's already matched
-    if (lockBoard || this === firstTile || this.classList.contains("matched")) return;
+  function flipCard() {
+    if (lockBoard || this === firstTile) return;
 
-    // Reveal the card
-    this.src = this.dataset.imageSrc;
+    const img = this.querySelector("img");
+    img.src = this.dataset.icon; // Reveal the animal
 
     if (!firstTile) {
-      // First card clicked
       firstTile = this;
-    } else {
-      // Second card clicked
-      secondTile = this;
-      moves++;
-      if (moveDisplay) moveDisplay.textContent = moves;
-      checkMatch();
+      return;
     }
+
+    secondTile = this;
+    moves++;
+    moveDisplay.innerText = moves;
+    checkMatch();
   }
 
-  // --- Check for Matches ---
   function checkMatch() {
-    const isMatch = firstTile.dataset.imageSrc === secondTile.dataset.imageSrc;
+    let isMatch = firstTile.dataset.icon === secondTile.dataset.icon;
+    isMatch ? disableCards() : unflipCards();
+  }
 
-    if (isMatch) {
-      // It's a match!
-      firstTile.classList.add("matched");
-      secondTile.classList.add("matched");
-      matchesFound++;
-      
-      // Check for win condition
-      if (matchesFound === animalPool.length) {
-        winMessage.style.display = "block";
-      }
-      resetTurn();
-    } else {
-      // Not a match, wait and flip back
-      lockBoard = true;
-      setTimeout(() => {
-        firstTile.src = blankImage;
-        secondTile.src = blankImage;
-        resetTurn();
-      }, 800);
+  function disableCards() {
+    matchesFound++;
+    resetTurn();
+    if (matchesFound === animalPool.length) {
+      winMessage.style.display = "block";
     }
   }
 
-  // --- Reset Turn Variables ---
-  function resetTurn() {
-    [firstTile, secondTile] = [null, null];
-    lockBoard = false;
+  function unflipCards() {
+    lockBoard = true;
+    setTimeout(() => {
+      firstTile.querySelector("img").src = blankImage;
+      secondTile.querySelector("img").src = blankImage;
+      resetTurn();
+    }, 1000);
   }
 
-  // --- Event Listeners ---
-  if (resetBtn) resetBtn.addEventListener("click", startGame);
+  function resetTurn() {
+    [firstTile, secondTile, lockBoard] = [null, null, false];
+  }
 
-  // --- Initialize Game ---
-  startGame();
+  resetBtn.addEventListener("click", initGame);
+
+  // Start the game for the first time
+  initGame();
 });
