@@ -1,3 +1,4 @@
+console.log("game.js loaded");
 document.addEventListener("DOMContentLoaded", function () {
 
   // ----- CARD BACK IMAGE -----
