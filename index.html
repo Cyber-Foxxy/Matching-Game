@@ -1,19 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Animal Memory Match</title>
-
-  <!-- CSS -->
-  <link rel="stylesheet" href="style.css">
-
-  <!-- JS (defer ensures DOM is loaded) -->
-  <script src="game.js" defer></script>
-</head>
 <body>
 
   <h1>🐾 Animal Memory Match 🐾</h1>
   <p class="subtitle">Click a card to reveal an animal</p>
+
+  <div id="gameStatus">
+    <h2 id="winMessage" style="display: none;">You won! 🎉</h2>
+    <button id="resetBtn">Start Over</button>
+  </div>
 
   <div id="gameBoard"></div>
 
