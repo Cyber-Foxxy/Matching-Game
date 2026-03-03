@@ -35,15 +35,17 @@
         if (!playerData) return window.location.href = "index.html";
         nameText.textContent = playerData.firstName;
 
-        // 2. Animal Data (Using Web Placeholders for testing)
+        // 2. Animal Data 
         const animals = [
-            "https://placehold.co/120/ff6f91/white?text=🐶",
-            "https://placehold.co/120/4ecdc4/white?text=🐱",
-            "https://placehold.co/120/ffb703/white?text=🦊",
-            "https://placehold.co/120/a2d2ff/black?text=🐻",
-            "https://placehold.co/120/ff85a1/white?text=🐼",
-            "https://placehold.co/120/6a0572/white?text=🐨"
-        ];
+images/crow.jpg
+images/deer.jpg
+images/duck.jpg
+images/fox.jpg
+images/goat.jpg
+images/mouse.jpg
+images/puppy.jpg
+images/rabbit.jpg
+images/raccoon.jpg
         const backImg = "https://placehold.co/120/ffd166/333333?text=🐾";
 
         let flippedCards = [];
@@ -80,11 +82,17 @@
                 matchedPairs++;
                 if (matchedPairs === animals.length) endGame();
             } else {
-                c1.src = backImg;
-                c2.src = backImg;
-            }
-            flippedCards = [];
-        }
+               // WRONG MATCH - These are the lines that make them "disappear":
+      card1.src = backImg; 
+      card2.src = backImg;
+      
+      // Also reset the flip state so they can be clicked again
+      card1.dataset.flipped = "false";
+      card2.dataset.flipped = "false";
+    }
+
+    flippedCards = []; // Clear the array for the next turn
+  }
 
         function endGame() {
             playerData.attempts = attempts;
