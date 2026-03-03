@@ -1,45 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Animal Memory Match - Setup</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <title>Setup - Animal Match</title>
+    <style>
+        body { font-family: "Comic Sans MS", cursive; background: #fff1c1; text-align: center; padding: 50px; }
+        .setup-card { background: white; padding: 30px; border-radius: 20px; display: inline-block; border: 4px solid #ff6f91; }
+        input { display: block; margin: 10px auto; padding: 10px; border-radius: 8px; border: 2px solid #ffb703; }
+        button { background: #ff6f91; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-size: 1.1em; }
+    </style>
 </head>
 <body>
+    <h1>🐾 Animal Memory Setup 🐾</h1>
+    <div class="setup-card">
+        <input type="text" id="fname" placeholder="First Name">
+        <input type="text" id="lname" placeholder="Last Name">
+        <input type="number" id="age" placeholder="Age">
+        <button onclick="startGame()">Start Game</button>
+    </div>
 
-<h1>🐾 Animal Memory Match 🐾</h1>
+    <script>
+        function startGame() {
+            const f = document.getElementById('fname').value;
+            const l = document.getElementById('lname').value;
+            const a = document.getElementById('age').value;
 
-<div class="card">
-  <input id="fname" placeholder="First Name">
-  <input id="lname" placeholder="Last Name">
-  <input id="age" type="number" placeholder="Age">
-  <button onclick="startGame()">Start Game</button>
-</div>
+            if (!f || !l || !a) return alert("Fill all fields!");
 
-<script>
-function startGame() {
-  const player = {
-    firstName: fname.value.trim(),
-    lastName: lname.value.trim(),
-    age: age.value,
-    attempts: 0
-  };
-
-  if (!player.firstName || !player.lastName || !player.age) {
-    alert("Please fill out all fields.");
-    return;
-  }
-
-  localStorage.setItem("playerData", JSON.stringify(player));
-  window.location.href = "game.html";
-}
-</script>
-
-</body>
-</html>
-
-});
-</script>
-
+            const player = { firstName: f, lastName: l, age: a, attempts: 0 };
+            localStorage.setItem('playerData', JSON.stringify(player));
+            window.location.href = 'game.html';
+        }
+    </script>
 </body>
 </html>
