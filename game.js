@@ -1,11 +1,16 @@
 document.addEventListener("DOMContentLoaded", () => {
+  console.log("✅ game.js loaded");
+
   const animals = [
     "images/crow.jpg",
     "images/deer.jpg",
     "images/duck.jpg",
     "images/fox.jpg",
     "images/goat.jpg",
-    "images/rabbit.jpg"
+    "images/mouse.jpg",
+    "images/puppy.jpg",
+    "images/rabbit.jpg",
+    "images/raccoon.jpg"
   ];
 
   const backImg = "https://via.placeholder.com/120/ffd166/000000?text=🐾";
@@ -21,9 +26,11 @@ document.addEventListener("DOMContentLoaded", () => {
   // Load player
   const playerData = JSON.parse(localStorage.getItem("playerData"));
   if (!playerData) {
+    alert("No player data found. Returning to setup.");
     window.location.href = "index.html";
     return;
   }
+
   playerName.textContent = playerData.firstName;
 
   // Build deck
@@ -73,6 +80,8 @@ document.addEventListener("DOMContentLoaded", () => {
   function endGame() {
     playerData.attempts = attempts;
     localStorage.setItem("playerData", JSON.stringify(playerData));
-    setTimeout(() => window.location.href = "results.html", 600);
+    setTimeout(() => {
+      window.location.href = "results.html";
+    }, 700);
   }
 });
