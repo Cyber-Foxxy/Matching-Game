@@ -1,96 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Animal Memory Match</title>
-    <style>
-        body { font-family: "Comic Sans MS", cursive; background: #fff1c1; text-align: center; padding: 20px; }
-        h1 { color: #ff6f91; }
-        #gameBoard { display: grid; grid-template-columns: repeat(4, 120px); gap: 15px; justify-content: center; margin-top: 20px; }
-        img { width: 120px; height: 120px; border-radius: 12px; border: 4px solid #ffb703; cursor: pointer; transition: transform 0.3s; }
-        img:hover { transform: scale(1.05); }
-        .stats { font-size: 1.2rem; margin: 10px; color: #333; }
-        #attemptCount { font-weight: bold; color: #ff6f91; }
-    </style>
+  <meta charset="UTF-8">
+  <title>Animal Memory Match - Game</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <h1>🐾 Animal Memory Match 🐾</h1>
-    <div class="stats">Player: <span id="playerName"></span> | Attempts: <span id="attemptCount">0</span></div>
-    
-    <div id="gameBoard"></div>
+<h1>🐾 Animal Memory Match 🐾</h1>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const board = document.getElementById("gameBoard");
-            const attemptDisplay = document.getElementById("attemptCount");
-            
-            // Retrieve Player Data
-            let playerData = JSON.parse(localStorage.getItem('playerData'));
-            if (!playerData) window.location.href = 'index.html'; // Safety redirect
-            document.getElementById('playerName').innerText = playerData.firstName;
+<div class="stats">
+  Player: <span id="playerName"></span> |
+  Attempts: <span id="attempts">0</span>
+</div>
 
-            let attempts = 0;
-            let flippedCards = [];
-            let matchedPairs = 0;
+<div id="gameBoard"></div>
 
-            const animals = ["images/crow.jpg", "images/deer.jpg", "images/duck.jpg", "images/fox.jpg", "images/goat.jpg", "images/rabbit.jpg"];
-            const blankSrc = "https://via.placeholder.com/120/ffd166/000000?text=🐾";
-
-            // Create pairs and shuffle
-            const deck = [...animals, ...animals].sort(() => 0.5 - Math.random());
-
-            // Build Board
-            deck.forEach((animalPath, index) => {
-                const img = document.createElement("img");
-                img.src = blankSrc;
-                img.dataset.animal = animalPath;
-                img.addEventListener("click", flipCard);
-                board.appendChild(img);
-            });
-
-            function flipCard() {
-                // Prevent clicking same card or more than 2 cards
-                if (flippedCards.length < 2 && this.src === blankSrc) {
-                    this.src = this.dataset.animal;
-                    flippedCards.push(this);
-
-                    if (flippedCards.length === 2) {
-                        attempts++;
-                        attemptDisplay.innerText = attempts;
-                        checkMatch();
-                    }
-                }
-            }
-
-            function checkMatch() {
-                const [card1, card2] = flippedCards;
-                
-                if (card1.dataset.animal === card2.dataset.animal) {
-                    matchedPairs++;
-                    flippedCards = [];
-                    if (matchedPairs === animals.length) endGame();
-                } else {
-                    // Mismatch: Flip back after 1 second
-                    setTimeout(() => {
-                        card1.src = blankSrc;
-                        card2.src = blankSrc;
-                        flippedCards = [];
-                    }, 1000);
-                }
-            }
-
-            function endGame() {
-                // Update attempts in JSON
-                playerData.attempts = attempts;
-                localStorage.setItem('playerData', JSON.stringify(playerData));
-                
-                // Slight delay for the user to see the last match
-                setTimeout(() => {
-                    window.location.href = 'results.html';
-                }, 800);
-            }
-        });
-    </script>
+<script src="game.js"></script>
 </body>
 </html>
