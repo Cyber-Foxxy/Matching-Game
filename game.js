@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
   console.log("✅ game.js loaded");
 
-  const animals = [
+  const animals = [images/
     "images/crow.jpg",
     "images/deer.jpg",
     "images/duck.jpg",
