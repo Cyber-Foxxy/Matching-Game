@@ -1,21 +1,97 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Animal Memory Match - Game</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <title>Animal Match - Play</title>
+    <style>
+        body { font-family: "Comic Sans MS", cursive; background: #fff1c1; text-align: center; }
+        #gameBoard { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, 120px); 
+            gap: 15px; 
+            justify-content: center; 
+            max-width: 600px; 
+            margin: 20px auto; 
+        }
+        img { width: 120px; height: 120px; border-radius: 12px; border: 4px solid #ffb703; cursor: pointer; background: #ffd166; }
+        .stats { font-size: 1.2em; color: #ff6f91; margin-top: 20px; }
+    </style>
 </head>
 <body>
+    <h1>🐾 Animal Match 🐾</h1>
+    <div class="stats">
+        Player: <span id="playerName"></span> | Attempts: <span id="attempts">0</span>
+    </div>
+    <div id="gameBoard"></div>
 
-<h1>🐾 Animal Memory Match 🐾</h1>
+    <script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const board = document.getElementById("gameBoard");
+        const attemptsText = document.getElementById("attempts");
+        const nameText = document.getElementById("playerName");
 
-<div class="stats">
-  Player: <span id="playerName"></span> |
-  Attempts: <span id="attempts">0</span>
-</div>
+        // 1. Load Player Data
+        const playerData = JSON.parse(localStorage.getItem("playerData"));
+        if (!playerData) return window.location.href = "index.html";
+        nameText.textContent = playerData.firstName;
 
-<div id="gameBoard"></div>
+        // 2. Animal Data (Using Web Placeholders for testing)
+        const animals = [
+            "https://placehold.co/120/ff6f91/white?text=🐶",
+            "https://placehold.co/120/4ecdc4/white?text=🐱",
+            "https://placehold.co/120/ffb703/white?text=🦊",
+            "https://placehold.co/120/a2d2ff/black?text=🐻",
+            "https://placehold.co/120/ff85a1/white?text=🐼",
+            "https://placehold.co/120/6a0572/white?text=🐨"
+        ];
+        const backImg = "https://placehold.co/120/ffd166/333333?text=🐾";
 
-<script src="game.js"></script>
+        let flippedCards = [];
+        let attempts = 0;
+        let matchedPairs = 0;
+
+        // 3. Build & Shuffle Deck
+        const deck = [...animals, ...animals].sort(() => Math.random() - 0.5);
+
+        deck.forEach(animal => {
+            const card = document.createElement("img");
+            card.src = backImg;
+            card.dataset.animal = animal;
+            card.addEventListener("click", () => flipCard(card));
+            board.appendChild(card);
+        });
+
+        function flipCard(card) {
+            if (flippedCards.length === 2 || card.src !== backImg) return;
+
+            card.src = card.dataset.animal;
+            flippedCards.push(card);
+
+            if (flippedCards.length === 2) {
+                attempts++;
+                attemptsText.textContent = attempts;
+                setTimeout(checkMatch, 800);
+            }
+        }
+
+        function checkMatch() {
+            const [c1, c2] = flippedCards;
+            if (c1.dataset.animal === c2.dataset.animal) {
+                matchedPairs++;
+                if (matchedPairs === animals.length) endGame();
+            } else {
+                c1.src = backImg;
+                c2.src = backImg;
+            }
+            flippedCards = [];
+        }
+
+        function endGame() {
+            playerData.attempts = attempts;
+            localStorage.setItem("playerData", JSON.stringify(playerData));
+            window.location.href = "results.html";
+        }
+    });
+    </script>
 </body>
 </html>
