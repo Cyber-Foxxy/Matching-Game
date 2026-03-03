@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Final Results</title>
+    <style>
+        body { font-family: "Comic Sans MS", cursive; background: #fff1c1; text-align: center; padding: 50px; }
+        .results-card { background: white; padding: 40px; border-radius: 20px; border: 4px solid #ff6f91; display: inline-block; }
+        h1 { color: #ff6f91; }
+        .data-point { font-size: 1.4rem; margin: 10px 0; }
+        .score { font-size: 2rem; color: #ffb703; font-weight: bold; }
+        .btn-group { margin-top: 30px; }
+        button { padding: 10px 20px; margin: 5px; border-radius: 8px; cursor: pointer; border: none; font-weight: bold; }
+        .play-again { background: #ff6f91; color: white; }
+        .reset { background: #ccc; }
+    </style>
+</head>
+<body>
+
+    <div class="results-card">
+        <h1>🏆 Congratulations! 🏆</h1>
+        <div class="data-point">Player: <span id="resName"></span></div>
+        <div class="data-point">Age: <span id="resAge"></span></div>
+        <hr>
+        <div class="data-point">Total Attempts:</div>
+        <div class="score" id="resAttempts"></div>
+
+        <div class="btn-group">
+            <button class="play-again" onclick="window.location.href='game.html'">Play Again</button>
+            <button class="reset" onclick="resetGame()">Reset & New Player</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const dataString = localStorage.getItem('playerData');
+            
+            if (dataString) {
+                const player = JSON.parse(dataString);
+                document.getElementById('resName').innerText = `${player.firstName} ${player.lastName}`;
+                document.getElementById('resAge').innerText = player.age;
+                document.getElementById('resAttempts').innerText = player.attempts;
+            } else {
+                window.location.href = 'index.html';
+            }
+        });
+
+        function resetGame() {
+            localStorage.clear();
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+</html>
