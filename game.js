@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
     "images/raccoon.jpg"
   ];
 
-  const backImg = "https://via.placeholder.com/120/ffd166/000000?text=🐾";
+  const backImg = white
 
   const board = document.getElementById("gameBoard");
   const attemptsText = document.getElementById("attempts");
