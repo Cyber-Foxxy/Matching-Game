@@ -1,42 +1,75 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const gameBoard = document.getElementById("gameBoard");
+  const animals = [
+    "images/crow.jpg",
+    "images/deer.jpg",
+    "images/duck.jpg",
+    "images/fox.jpg",
+    "images/goat.jpg",
+    "images/rabbit.jpg"
+  ];
 
-    // 1. List your images exactly as they appear in your /images folder
-    const animalPool = [
-        "images/crow.jpg", "images/deer.jpg", "images/duck.jpg", 
-        "images/fox.jpg", "images/goat.jpg", "images/mouse.jpg", 
-        "images/puppy.jpg", "images/rabbit.jpg", "images/raccoon.jpg"
-    ];
+  const backImg = "https://via.placeholder.com/120/ffd166/000000?text=🐾";
 
-    // 2. Create pairs (Matching games need 2 of each!)
-    let gameGrid = [...animalPool, ...animalPool];
+  const board = document.getElementById("gameBoard");
+  const attemptsText = document.getElementById("attempts");
+  const playerName = document.getElementById("playerName");
 
-    // 3. Shuffle the array
-    gameGrid.sort(() => 0.5 - Math.random());
+  let flippedCards = [];
+  let attempts = 0;
+  let matchedPairs = 0;
 
-    // 4. Generate the HTML for the board
-    function createBoard() {
-        gameGrid.forEach((item) => {
-            const card = document.createElement("div");
-            card.classList.add("card");
-            card.dataset.name = item;
+  // Load player
+  const playerData = JSON.parse(localStorage.getItem("playerData"));
+  if (!playerData) {
+    window.location.href = "index.html";
+    return;
+  }
 
-            // Create the image element
-            const img = document.createElement("img");
-            img.src = item; 
-            img.style.display = "none"; // Hide initially for the game logic
+  playerName.textContent = playerData.firstName;
 
-            card.appendChild(img);
-            gameBoard.appendChild(card);
+  // Create & shuffle deck
+  const deck = [...animals, ...animals].sort(() => Math.random() - 0.5);
 
-            // Add click event to flip
-            card.addEventListener("click", () => {
-                img.style.display = "block";
-                // Add your matching logic here
-            });
-        });
+  deck.forEach(animal => {
+    const card = document.createElement("img");
+    card.src = backImg;
+    card.dataset.animal = animal;
+    card.addEventListener("click", () => flipCard(card));
+    board.appendChild(card);
+  });
+
+  function flipCard(card) {
+    if (flippedCards.length === 2 || card.src !== backImg) return;
+
+    card.src = card.dataset.animal;
+    flippedCards.push(card);
+
+    if (flippedCards.length === 2) {
+      attempts++;
+      attemptsText.textContent = attempts;
+      setTimeout(checkMatch, 800);
+    }
+  }
+
+  function checkMatch() {
+    const [card1, card2] = flippedCards;
+
+    if (card1.dataset.animal === card2.dataset.animal) {
+      matchedPairs++;
+      if (matchedPairs === animals.length) endGame();
+    } else {
+      card1.src = backImg;
+      card2.src = backImg;
     }
 
-    createBoard();
-});
+    flippedCards = [];
+  }
+
+  function endGame() {
+    playerData.attempts = attempts;
+    localStorage.setItem("playerData", JSON.stringify(playerData));
+    setTimeout(() => {
+      window.location.href = "results.html";
+    }, 600);
+  }
 });
