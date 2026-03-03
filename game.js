@@ -24,24 +24,27 @@ document.addEventListener("DOMContentLoaded", () => {
     window.location.href = "index.html";
     return;
   }
-
   playerName.textContent = playerData.firstName;
 
-  // Create & shuffle deck
+  // Build deck
   const deck = [...animals, ...animals].sort(() => Math.random() - 0.5);
 
   deck.forEach(animal => {
     const card = document.createElement("img");
     card.src = backImg;
     card.dataset.animal = animal;
+    card.dataset.flipped = "false";
+
     card.addEventListener("click", () => flipCard(card));
     board.appendChild(card);
   });
 
   function flipCard(card) {
-    if (flippedCards.length === 2 || card.src !== backImg) return;
+    if (flippedCards.length === 2) return;
+    if (card.dataset.flipped === "true") return;
 
     card.src = card.dataset.animal;
+    card.dataset.flipped = "true";
     flippedCards.push(card);
 
     if (flippedCards.length === 2) {
@@ -60,6 +63,8 @@ document.addEventListener("DOMContentLoaded", () => {
     } else {
       card1.src = backImg;
       card2.src = backImg;
+      card1.dataset.flipped = "false";
+      card2.dataset.flipped = "false";
     }
 
     flippedCards = [];
@@ -68,8 +73,6 @@ document.addEventListener("DOMContentLoaded", () => {
   function endGame() {
     playerData.attempts = attempts;
     localStorage.setItem("playerData", JSON.stringify(playerData));
-    setTimeout(() => {
-      window.location.href = "results.html";
-    }, 600);
+    setTimeout(() => window.location.href = "results.html", 600);
   }
 });
