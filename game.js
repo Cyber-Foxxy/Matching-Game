@@ -1,87 +1,79 @@
 document.addEventListener("DOMContentLoaded", () => {
   console.log("✅ game.js loaded");
 
-  const animals = [images/
+  const images = [
+    "images/crow.jpg",
     "images/crow.jpg",
     "images/deer.jpg",
+    "images/deer.jpg",
+    "images/duck.jpg",
     "images/duck.jpg",
     "images/fox.jpg",
+    "images/fox.jpg",
+    "images/goat.jpg",
     "images/goat.jpg",
     "images/mouse.jpg",
+    "images/mouse.jpg",
+    "images/puppy.jpg",
     "images/puppy.jpg",
     "images/rabbit.jpg",
-    "images/raccoon.jpg"
+    "images/rabbit.jpg",
+    "images/raccoon.jpg",
+     "images/raccoon.jpg"
   ];
 
-  const backImg = white
+  // Two of each image
+  const cards = [...images, ...images];
+
+  // Shuffle cards
+  cards.sort(() => Math.random() - 0.5);
 
   const board = document.getElementById("gameBoard");
-  const attemptsText = document.getElementById("attempts");
-  const playerName = document.getElementById("playerName");
 
-  let flippedCards = [];
-  let attempts = 0;
-  let matchedPairs = 0;
+  let firstCard = null;
+  let secondCard = null;
+  let lockBoard = false;
 
-  // Load player
-  const playerData = JSON.parse(localStorage.getItem("playerData"));
-  if (!playerData) {
-    alert("No player data found. Returning to setup.");
-    window.location.href = "index.html";
-    return;
-  }
+  cards.forEach(imagePath => {
+    const card = document.createElement("div");
+    card.classList.add("card");
 
-  playerName.textContent = playerData.firstName;
+    const img = document.createElement("img");
+    img.src = imagePath;
+    img.style.display = "none";
 
-  // Build deck
-  const deck = [...animals, ...animals].sort(() => Math.random() - 0.5);
-
-  deck.forEach(animal => {
-    const card = document.createElement("img");
-    card.src = backImg;
-    card.dataset.animal = animal;
-    card.dataset.flipped = "false";
-
-    card.addEventListener("click", () => flipCard(card));
+    card.appendChild(img);
     board.appendChild(card);
+
+    card.addEventListener("click", () => {
+      if (lockBoard) return;
+      if (img.style.display === "block") return;
+
+      img.style.display = "block";
+
+      if (!firstCard) {
+        firstCard = img;
+        return;
+      }
+
+      secondCard = img;
+      lockBoard = true;
+
+      if (firstCard.src === secondCard.src) {
+        resetTurn();
+      } else {
+        setTimeout(() => {
+          firstCard.style.display = "none";
+          secondCard.style.display = "none";
+          resetTurn();
+        }, 800);
+      }
+    });
   });
 
-  function flipCard(card) {
-    if (flippedCards.length === 2) return;
-    if (card.dataset.flipped === "true") return;
-
-    card.src = card.dataset.animal;
-    card.dataset.flipped = "true";
-    flippedCards.push(card);
-
-    if (flippedCards.length === 2) {
-      attempts++;
-      attemptsText.textContent = attempts;
-      setTimeout(checkMatch, 800);
-    }
-  }
-
-  function checkMatch() {
-    const [card1, card2] = flippedCards;
-
-    if (card1.dataset.animal === card2.dataset.animal) {
-      matchedPairs++;
-      if (matchedPairs === animals.length) endGame();
-    } else {
-      card1.src = backImg;
-      card2.src = backImg;
-      card1.dataset.flipped = "false";
-      card2.dataset.flipped = "false";
-    }
-
-    flippedCards = [];
-  }
-
-  function endGame() {
-    playerData.attempts = attempts;
-    localStorage.setItem("playerData", JSON.stringify(playerData));
-    setTimeout(() => {
-      window.location.href = "results.html";
-    }, 700);
+  function resetTurn() {
+    firstCard = null;
+    secondCard = null;
+    lockBoard = false;
   }
 });
