@@ -1,30 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Results</title>
-    <style>
-        body { font-family: "Comic Sans MS", cursive; background: #fff1c1; text-align: center; padding: 50px; }
-        .card { background: white; padding: 30px; border-radius: 20px; border: 4px solid #ff6f91; display: inline-block; }
-    </style>
+  <meta charset="UTF-8">
+  <title>Animal Memory Match - Results</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="card">
-        <h1>🏆 Finished! 🏆</h1>
-        <p id="resName"></p>
-        <p id="resAge"></p>
-        <h2 id="resAttempts"></h2>
-        <button onclick="window.location.href='index.html'">Play Again</button>
-        <button onclick="localStorage.clear(); window.location.href='index.html'">Reset All</button>
-    </div>
+  <div class="results-card">
+    <h1>🏆 Congratulations! 🏆</h1>
+    <div class="data-point">Player: <span id="resName"></span></div>
+    <div class="data-point">Age: <span id="resAge"></span></div>
+    <hr>
+    <div class="data-point">Total Attempts:</div>
+    <div class="score" id="resAttempts"></div>
 
-    <script>
-        const data = JSON.parse(localStorage.getItem('playerData'));
-        if (data) {
-            document.getElementById('resName').textContent = "Player: " + data.firstName + " " + data.lastName;
-            document.getElementById('resAge').textContent = "Age: " + data.age;
-            document.getElementById('resAttempts').textContent = "Total Attempts: " + data.attempts;
-        }
-    </script>
+    <div class="btn-group">
+      <button class="play-again" onclick="window.location.href='game.html'">Play Again</button>
+      <button class="reset" onclick="resetGame()">Reset & New Player</button>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const playerData = JSON.parse(localStorage.getItem("playerData"));
+      if (!playerData) {
+        window.location.href = "index.html";
+        return;
+      }
+
+      document.getElementById("resName").textContent = `${playerData.firstName} ${playerData.lastName}`;
+      document.getElementById("resAge").textContent = playerData.age;
+      document.getElementById("resAttempts").textContent = playerData.attempts;
+    });
+
+    function resetGame() {
+      localStorage.clear();
+      window.location.href = "index.html";
+    }
+  </script>
 </body>
 </html>
