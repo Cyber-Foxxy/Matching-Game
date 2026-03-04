@@ -3,9 +3,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const attemptDisplay = document.getElementById("attemptCount");
   const playerNameEl = document.getElementById("playerName");
 
+  // Load player data
   let playerData = JSON.parse(localStorage.getItem("playerData"));
   if (!playerData) {
-    alert("No player data found. Redirecting to setup page.");
     window.location.href = "index.html";
   }
   playerNameEl.textContent = playerData.firstName;
@@ -13,7 +13,9 @@ document.addEventListener("DOMContentLoaded", () => {
   let attempts = 0;
   let flippedCards = [];
   let matchedPairs = 0;
- const images = [
+
+  // Unique images
+   const images = [
     "images/crow.jpg",
     "images/crow.jpg",
     "images/deer.jpg",
@@ -32,13 +34,13 @@ document.addEventListener("DOMContentLoaded", () => {
     "images/rabbit.jpg",
     "images/raccoon.jpg",
      "images/raccoon.jpg"
-      ];
+    "images/raccoon.jpg"
+  ];
 
-
-  const backImg = "https://via.placeholder.com/120/ffd166/000000?text=🐾";
-
+  // Create deck: exactly 2 of each image → 1 match
   const deck = [...images, ...images].sort(() => Math.random() - 0.5);
 
+  // Build board
   deck.forEach(src => {
     const card = document.createElement("div");
     card.classList.add("card");
