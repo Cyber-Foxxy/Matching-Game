@@ -2,16 +2,39 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Animal Memory Match</title>
+  <title>Animal Memory Match - Setup</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <h1>🐾 Welcome to Animal Memory Match! 🐾</h1>
+  <div class="setup-card">
+    <input type="text" id="fname" placeholder="First Name">
+    <input type="text" id="lname" placeholder="Last Name">
+    <input type="number" id="age" placeholder="Age">
+    <button onclick="startGame()">Start Game</button>
+  </div>
 
-  <h1>🐾 Animal Memory Match 🐾</h1>
-  <p>Click two cards to find a match</p>
+  <script>
+    function startGame() {
+      const firstName = document.getElementById('fname').value.trim();
+      const lastName = document.getElementById('lname').value.trim();
+      const age = document.getElementById('age').value.trim();
 
-  <div id="gameBoard"></div>
+      if (!firstName || !lastName || !age || isNaN(age)) {
+        alert("Please fill all fields correctly!");
+        return;
+      }
 
-  <script src="game.js"></script>
+      const player = {
+        firstName: firstName,
+        lastName: lastName,
+        age: Number(age),
+        attempts: 0
+      };
+
+      localStorage.setItem('playerData', JSON.stringify(player));
+      window.location.href = 'game.html';
+    }
+  </script>
 </body>
 </html>
