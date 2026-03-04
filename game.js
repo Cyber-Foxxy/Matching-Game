@@ -3,6 +3,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const attemptDisplay = document.getElementById("attemptCount");
   const playerNameEl = document.getElementById("playerName");
 
+  // Load player data
   let playerData = JSON.parse(localStorage.getItem("playerData"));
   if (!playerData) {
     window.location.href = "index.html";
