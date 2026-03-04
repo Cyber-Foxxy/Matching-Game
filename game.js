@@ -16,16 +16,23 @@ document.addEventListener("DOMContentLoaded", () => {
   // Unique images
   const images = [
     "images/crow.jpg",
+    "images/crow.jpg",
+    "images/deer.jpg",
     "images/deer.jpg",
     "images/duck.jpg",
+    "images/duck.jpg",
+    "images/fox.jpg",
     "images/fox.jpg",
     "images/goat.jpg",
+    "images/goat.jpg",
+    "images/mouse.jpg",
     "images/mouse.jpg",
     "images/puppy.jpg",
+    "images/puppy.jpg",
     "images/rabbit.jpg",
-    "images/raccoon.jpg"
-  ];
-
+    "images/rabbit.jpg",
+    "images/raccoon.jpg",
+     "images/raccoon.jpg"
   // Create deck: exactly 2 of each image → 1 match
   const deck = [...images, ...images].sort(() => Math.random() - 0.5);
 
