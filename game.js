@@ -3,7 +3,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const attemptDisplay = document.getElementById("attemptCount");
   const playerNameEl = document.getElementById("playerName");
 
-  // Load player data
   let playerData = JSON.parse(localStorage.getItem("playerData"));
   if (!playerData) {
     window.location.href = "index.html";
@@ -15,25 +14,15 @@ document.addEventListener("DOMContentLoaded", () => {
   let matchedPairs = 0;
 
   // Unique images
-   const images = [
-    "images/crow.jpg",
+  const images = [
     "images/crow.jpg",
     "images/deer.jpg",
-    "images/deer.jpg",
-    "images/duck.jpg",
     "images/duck.jpg",
     "images/fox.jpg",
-    "images/fox.jpg",
-    "images/goat.jpg",
     "images/goat.jpg",
     "images/mouse.jpg",
-    "images/mouse.jpg",
-    "images/puppy.jpg",
     "images/puppy.jpg",
     "images/rabbit.jpg",
-    "images/rabbit.jpg",
-    "images/raccoon.jpg",
-     "images/raccoon.jpg"
     "images/raccoon.jpg"
   ];
 
