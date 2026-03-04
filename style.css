@@ -58,15 +58,13 @@ button:hover {
   min-width: 350px;
 }
 
-/* ⭐ Centered Game Board + Clean Columns ⭐ */
 #gameBoard {
   display: grid;
-  grid-template-columns: repeat(6, 120px); /* 6 columns */
+  grid-template-columns: repeat(6, 120px); 
   gap: 20px;
-  justify-content: center; /* centers the grid horizontally */
+  justify-content: center; 
   margin: 30px auto;
-  width: fit-content; /* shrink-wrap grid so it centers perfectly */
-}
+  width: fit-content; 
 
 .card {
   width: 120px;
