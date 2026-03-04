@@ -58,13 +58,14 @@ button:hover {
   min-width: 350px;
 }
 
+/* ⭐ Centered Game Board + Clean Columns ⭐ */
 #gameBoard {
   display: grid;
-  grid-template-columns: repeat(6, 120px); 
+  grid-template-columns: repeat(6, 120px); /* 6 columns */
   gap: 20px;
-  justify-content: center; 
-  margin: 30px auto; 
-  max-width: 800px; 
+  justify-content: center; /* centers the grid horizontally */
+  margin: 30px auto;
+  width: fit-content; /* shrink-wrap grid so it centers perfectly */
 }
 
 .card {
@@ -80,15 +81,12 @@ button:hover {
   width: 100%;
   height: 100%;
   border-radius: 8px;
+  object-fit: cover;
 }
 
-.stats {
-  font-size: 28px;
-  font-weight: bold;
-  margin: 20px;
-}
 .stats {
   font-size: 26px;
   font-weight: bold;
   margin: 15px;
 }
+
